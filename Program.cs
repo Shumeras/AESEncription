@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Text;
-using AESEncription;
+using AESEncryption;
 
-namespace AESEncription
+namespace AESEncryption
 {
     
     public static class Params
     {
-        public static bool decript = false;
+        public static bool decrypt = false;
         public static bool verbose = false;
         public static bool useLabels = false;
         public static bool hex = false;
@@ -33,7 +33,7 @@ namespace AESEncription
             if(Params.verbose)
             {
                 
-                System.Console.WriteLine(Params.decript ? "Running in decription mode." : "Running in endription mode." );
+                System.Console.WriteLine(Params.decrypt ? "Running in decription mode." : "Running in endription mode." );
                 System.Console.WriteLine(Params.useCBC ? "Using CBC." : "Using ECB.");
                 System.Console.WriteLine(Params.usePadding ? "Using PKCS5 padding." : "Not using padding. (Will fail if text lenght is not mod 16 byte.)");
 
@@ -50,10 +50,10 @@ namespace AESEncription
             var cipher = new AESCipher(Encoding.UTF8.GetBytes(Params.key), Params.keySize);
             byte[] result;
 
-            if(Params.decript)
-                result = cipher.Decript(Convert.FromBase64String(Params.text));
+            if(Params.decrypt)
+                result = cipher.Decrypt(Convert.FromBase64String(Params.text));
             else
-                result = cipher.Encript(Encoding.UTF8.GetBytes(Params.text));
+                result = cipher.Encrypt(Encoding.UTF8.GetBytes(Params.text));
 
             if(Params.hex)
             {
@@ -69,7 +69,7 @@ namespace AESEncription
                 System.Console.WriteLine(Convert.ToBase64String(result));              
             }
                 
-            if(Params.decript)
+            if(Params.decrypt)
             {
                 if(Params.useLabels || Params.verbose)
                     System.Console.WriteLine("Result (utf-8):");
@@ -94,7 +94,7 @@ namespace AESEncription
                         Console.WriteLine("Structure:");
                         Console.WriteLine("[(param [param value])] [Key] Text ");
                         Console.WriteLine("Commands:");
-                        Console.WriteLine("--decript \t| --decipher | -d \t: Decript given text using given parameters;");
+                        Console.WriteLine("--decrypt \t| --decipher | -d \t: Decript given text using given parameters;");
                         Console.WriteLine("--verbose \t| -v \t: Output intermediate values;");
                         Console.WriteLine("--useLabels \t| -l \t: Label outputs;");
                         Console.WriteLine("--hex \t\t| -x \t: Turn on/off hex value output (off by default);");
@@ -109,7 +109,7 @@ namespace AESEncription
                     }
                     else if (arg == "-D" || arg == "--DECRIPT" || arg == "--DECIPHER")
                     {
-                        Params.decript = !Params.decript;
+                        Params.decrypt = !Params.decrypt;
                         Params.base64 = !Params.base64;
                     }
                     else if(arg == "-V" || arg == "--VERBOSE")

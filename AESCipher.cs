@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using AESEncription;
+using AESEncryption;
 
 // Currently only the 128bit key size complies with the standard
 public enum KeySize
@@ -266,9 +266,9 @@ class AESCipher
     }
 
 
-    #region Encription
+    #region Encryption
 
-    public byte[] Encript(byte[] data)
+    public byte[] Encrypt(byte[] data)
     {
         List<byte> result = new List<byte>();
 
@@ -355,7 +355,7 @@ class AESCipher
             #endregion CBC
 
             //AES encript current block
-            #region EncriptBlock
+            #region EncryptBlock
 
             byte[] subKey = new byte[16];
             
@@ -480,9 +480,9 @@ class AESCipher
     #endregion
 
 
-    #region Decription
+    #region Decryption
 
-    public byte[] Decript(byte[] data)
+    public byte[] Decrypt(byte[] data)
     {
         List<byte> result = new List<byte>();
 
@@ -520,8 +520,8 @@ class AESCipher
             if(Params.verbose)
             {
                 Console.WriteLine("Round: 10:");
-                Console.WriteLine("SubKey[ \t \t" + AESEncription.Program.BytesToFormatedString(subKey)+"];");
-                Console.WriteLine("Current fragment: \t" + AESEncription.Program.BytesToFormatedString(currentFragment));
+                Console.WriteLine("SubKey[ \t \t" + AESEncryption.Program.BytesToFormatedString(subKey)+"];");
+                Console.WriteLine("Current fragment: \t" + AESEncryption.Program.BytesToFormatedString(currentFragment));
             }
 
             currentFragment = AddRoundKey(currentFragment, subKey);
@@ -534,8 +534,8 @@ class AESCipher
                     subKey[j] = ExpandedKey[(16*i)+j];
 
                 if(Params.verbose) Console.WriteLine("Round: " + i);
-                if(Params.verbose) Console.WriteLine("SubKey[ \t \t" + AESEncription.Program.BytesToFormatedString(subKey)+"];");
-                if(Params.verbose) Console.WriteLine("Current fragment: \t" + AESEncription.Program.BytesToFormatedString(currentFragment));
+                if(Params.verbose) Console.WriteLine("SubKey[ \t \t" + AESEncryption.Program.BytesToFormatedString(subKey)+"];");
+                if(Params.verbose) Console.WriteLine("Current fragment: \t" + AESEncryption.Program.BytesToFormatedString(currentFragment));
 
                 currentFragment = AddRoundKey(currentFragment, subKey);
                 currentFragment = ReverseMixColumns(currentFragment);
@@ -597,7 +597,7 @@ class AESCipher
         for(int i = 0; i< 16; i++)
             bytes[i] = rSBox[bytes[i]];
         
-        if(Params.verbose) Console.WriteLine("After r sub bytes: \t" + AESEncription.Program.BytesToFormatedString(bytes));
+        if(Params.verbose) Console.WriteLine("After r sub bytes: \t" + AESEncryption.Program.BytesToFormatedString(bytes));
 
         return bytes; 
     }
@@ -634,7 +634,7 @@ class AESCipher
             (byte)(mul11[bytes[12]] ^ mul13[bytes[13]] ^ mul9[bytes[14]]  ^ mul14[bytes[15]])
         };
 
-        if(Params.verbose) Console.WriteLine("After r mix columns: \t" + AESEncription.Program.BytesToFormatedString(bytes));
+        if(Params.verbose) Console.WriteLine("After r mix columns: \t" + AESEncryption.Program.BytesToFormatedString(bytes));
 
         return bytes;
     }
@@ -648,7 +648,7 @@ class AESCipher
             bytes[12],bytes[9], bytes[6], bytes[3]
         };
 
-        if(Params.verbose) Console.WriteLine("After r shift rows: \t" + AESEncription.Program.BytesToFormatedString(bytes));
+        if(Params.verbose) Console.WriteLine("After r shift rows: \t" + AESEncryption.Program.BytesToFormatedString(bytes));
 
         return bytes;
 

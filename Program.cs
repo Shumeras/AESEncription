@@ -15,7 +15,7 @@ namespace AESEncription
         public static bool usePadding = true;
         public static bool useCBC = false;
 
-        public static KeySize keySize = KeySize.bit128;
+        public static KeySize keySize = KeySize.bit128; //Currently only the 128bit key size complies with the standard
 
         public static string key = "1111222233334444";
         public static string initVector = "1234567890123456";
@@ -94,20 +94,20 @@ namespace AESEncription
                         Console.WriteLine("Structure:");
                         Console.WriteLine("[(param [param value])] [Key] Text ");
                         Console.WriteLine("Commands:");
-                        Console.WriteLine("--decript | -d \t: Decript given text using given parameters;");
-                        Console.WriteLine("--verbose | -v \t: Output intermediate values;");
-                        Console.WriteLine("--useLabels | -l \t: Label outputs;");
-                        Console.WriteLine("--hex | -h \t: Turn on/off hex value output (off by default);");
-                        Console.WriteLine("--base64 | -b \t: Turn on/off base64 value output (on by default);");
-                        Console.WriteLine("--padding | -p \t: Turn on/off padding (on by default). If off - will fail if input is not divisible by 16 bytes;");
-                        Console.WriteLine("--cbc | -c  \t: Turn use CBC instead of ECB;");
-                        Console.WriteLine("--keySize | -s  \t: Set key size to use (128, 192 or 256 bit key length);");
-                        Console.WriteLine("--initVec | -i  \t: Set initialization vector for CBC mode;");
+                        Console.WriteLine("--decript \t| --decipher | -d \t: Decript given text using given parameters;");
+                        Console.WriteLine("--verbose \t| -v \t: Output intermediate values;");
+                        Console.WriteLine("--useLabels \t| -l \t: Label outputs;");
+                        Console.WriteLine("--hex \t\t| -x \t: Turn on/off hex value output (off by default);");
+                        Console.WriteLine("--base64 \t| -b \t: Turn on/off base64 value output (on by default);");
+                        Console.WriteLine("--padding \t| -p \t: Turn on/off padding (on by default). \nIf off - will fail if input is not divisible by 16 bytes;");
+                        Console.WriteLine("--cbc \t\t| -c  \t: Turn use CBC instead of ECB;");
+                        Console.WriteLine("--keySize \t| -s  \t: Set key size to use (128, 192 or 256 bit key length) \n Currently only the 128bit key size complies with the standard;");
+                        Console.WriteLine("--initVec \t| -i  \t: Set initialization vector for CBC mode;");
                         Console.WriteLine();
 
                         return false;
                     }
-                    else if (arg == "-D" || arg == "--DECRIPT")
+                    else if (arg == "-D" || arg == "--DECRIPT" || arg == "--DECIPHER")
                     {
                         Params.decript = !Params.decript;
                         Params.base64 = !Params.base64;

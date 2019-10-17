@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using AESEncription;
 
+// Currently only the 128bit key size complies with the standard
 public enum KeySize
 {
     bit128,

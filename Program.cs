@@ -13,6 +13,7 @@ namespace AESEncryption
         public static bool hex = false;
         public static bool base64 = true;
         public static bool usePadding = true;
+        public static bool useKeyPadding = true;
         public static bool useCBC = false;
 
         public static KeySize keySize = KeySize.bit128; //Currently only the 128bit key size complies with the standard
@@ -29,13 +30,11 @@ namespace AESEncryption
             if(!ParseInput(args))
                 return;
 
-
             if(Params.verbose)
-            {
-                
-                System.Console.WriteLine(Params.decrypt ? "Running in decription mode." : "Running in endription mode." );
+            {   
+                System.Console.WriteLine(Params.decrypt ? "Running in decryption mode." : "Running in endryption mode." );
                 System.Console.WriteLine(Params.useCBC ? "Using CBC." : "Using ECB.");
-                System.Console.WriteLine(Params.usePadding ? "Using PKCS5 padding." : "Not using padding. (Will fail if text lenght is not mod 16 byte.)");
+                System.Console.WriteLine(Params.usePadding ? "Using PKCS5 padding." : "Not using padding. (Will fail if text length is not mod 16 byte.)");
 
                 System.Console.WriteLine("Key: ({0})", Params.key);
                 System.Console.WriteLine(BytesToFormatedString(Encoding.UTF8.GetBytes(Params.key)));
@@ -47,7 +46,17 @@ namespace AESEncryption
 
             }
 
-            var cipher = new AESCipher(Encoding.UTF8.GetBytes(Params.key), Params.keySize);
+            var cipher = new AESCipher(
+                new AESParameters(
+                    Encoding.UTF8.GetBytes(Params.key),
+                    Params.keySize,
+                    Params.useCBC,
+                    Params.usePadding,
+                    Params.useKeyPadding,
+                    Encoding.UTF8.GetBytes(Params.initVector),
+                    Params.verbose
+                )
+            );
             byte[] result;
 
             if(Params.decrypt)
@@ -78,6 +87,7 @@ namespace AESEncryption
 
         }
 
+        ///Parse cl parameters. Returns false if not to execute.
         static bool ParseInput(string[] args)
         {
             bool keySet = false,
@@ -107,7 +117,7 @@ namespace AESEncryption
 
                         return false;
                     }
-                    else if (arg == "-D" || arg == "--DECRIPT" || arg == "--DECIPHER")
+                    else if (arg == "-D" || arg == "--DECRYPT" || arg == "--DECIPHER")
                     {
                         Params.decrypt = !Params.decrypt;
                         Params.base64 = !Params.base64;
@@ -145,7 +155,7 @@ namespace AESEncryption
                         i++;
                         if(args[i].Length < 16)
                         {
-                            Console.WriteLine("Warning: initialization vector mus be at least 16 bytes.");
+                            Console.WriteLine("Warning: initialization vector mus be atleast 16 bytes.");
                             return false;
                         }
                         
@@ -182,6 +192,7 @@ namespace AESEncryption
             return true;
         }
 
+        ///Formate byte[] to string for better readability
         public static string BytesToFormatedString(byte[] bytes, byte tabInterval = 4, byte lineInterval = 16)
         {
             string result = "";
